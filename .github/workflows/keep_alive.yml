@@ -1,12 +1,24 @@
-name: TARA Sentinel
+name: TARA Sentinel (Authenticated)
+
 on:
   schedule:
-    - cron: '0 */4 * * *' # Runs every 4 hours (Aggressive Keep-Alive)
-  workflow_dispatch:
+    - cron: '0 */4 * * *' # Runs every 4 hours
+  workflow_dispatch: # Allows manual testing
 
 jobs:
-  ping_scanner:
+  wake_up:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping TARA Space
-        run: curl -I https://huggingface.co/spaces/YOUR_USERNAME/TARA-Institutional-Scanner
+      - name: Ping Private Scanner
+        env:
+          # This pulls the key from the secret you just made
+          HF_TOKEN: ${{ secrets.HF_TOKEN }} 
+        run: |
+          # REPLACE THE URL BELOW WITH YOUR *EXACT* BROWSER URL
+          # Example: https://huggingface.co/spaces/TARAAcademy/Super_Scanner
+          TARGET_URL="https://huggingface.co/spaces/TARAAcademy/Super_Scanner"
+          
+          # This sends the Key (Token) so the private door opens
+          curl -I -H "Authorization: Bearer $HF_TOKEN" $TARGET_URL
+          
+          echo "Institutional Pulse Sent Successfully."
