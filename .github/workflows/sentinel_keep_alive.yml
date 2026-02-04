@@ -16,15 +16,15 @@ jobs:
         include:
           # --- APP 1 CONFIG ---
           - name: "App 1: Main"
-            url: "https://YOUR_USERNAME-APP_1_NAME.hf.space"
+            url: "https://taraacademy-swingscan.hf.space"
             
           # --- APP 2 CONFIG ---
           - name: "App 2: Analytics"
-            url: "https://YOUR_USERNAME-APP_2_NAME.hf.space"
+            url: "https://taraacademy-us-market-scanner.hf.space"
             
           # --- APP 3 CONFIG ---
           - name: "App 3: Dashboard"
-            url: "https://YOUR_USERNAME-APP_3_NAME.hf.space"
+            url: "https://taraacademy-super-scanner.hf.space"
 
     steps:
       - name: Sentinel Check for ${{ matrix.name }}
