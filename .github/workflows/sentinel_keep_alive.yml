@@ -1,0 +1,48 @@
+name: Sentinel (Keep Alive & Monitor)
+
+on:
+  # Run every 24 hours (prevent 48h timeout)
+  schedule:
+    - cron: "0 0 * * *"
+  # Allow manual trigger from GitHub UI
+  workflow_dispatch:
+
+jobs:
+  wake-up-check:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # --- APP 1 CONFIG ---
+          - name: "App 1: Main"
+            url: "https://YOUR_USERNAME-APP_1_NAME.hf.space"
+            
+          # --- APP 2 CONFIG ---
+          - name: "App 2: Analytics"
+            url: "https://YOUR_USERNAME-APP_2_NAME.hf.space"
+            
+          # --- APP 3 CONFIG ---
+          - name: "App 3: Dashboard"
+            url: "https://YOUR_USERNAME-APP_3_NAME.hf.space"
+
+    steps:
+      - name: Sentinel Check for ${{ matrix.name }}
+        run: |
+          echo "Target: ${{ matrix.url }}"
+          
+          # Try to wake up the space
+          response=$(curl -s -o /dev/null -w "%{http_code}" ${{ matrix.url }})
+          
+          if [ "$response" -eq 200 ]; then
+            echo "✅ ${{ matrix.name }} is AWAKE and Running (Status: 200)"
+          elif [ "$response" -eq 503 ]; then
+            echo "⚠️ ${{ matrix.name }} is STARTING UP or BUILDING (Status: 503)"
+            # Wait 30 seconds and try one more time
+            sleep 30
+            retry=$(curl -s -o /dev/null -w "%{http_code}" ${{ matrix.url }})
+            echo "   ↳ Retry Status: $retry"
+          else
+            echo "❌ ${{ matrix.name }} returned unexpected status: $response"
+            exit 1
+          fi
