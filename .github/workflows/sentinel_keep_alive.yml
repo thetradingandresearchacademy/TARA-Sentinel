@@ -25,7 +25,14 @@ jobs:
           # --- APP 3 CONFIG ---
           - name: "App 3: Dashboard"
             url: "https://taraacademy-super-scanner.hf.space"
+  
+   # --- APP 4 CONFIG ---
+          - name: "App 3: premarketscanner"
+            url: "https://taraacademy-premarketscanner.hf.space"
 
+   # --- APP 5 CONFIG ---
+          - name: "App 3: SwingLab pro Next"
+            url: "https://taraacademy-swinglabpronext.hf.space"
     steps:
       - name: Sentinel Check for ${{ matrix.name }}
         run: |
