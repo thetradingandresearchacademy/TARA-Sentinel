@@ -1,11 +1,9 @@
 name: Sentinel (Keep Alive & Monitor)
 
 on:
-  # Run every 24 hours (prevent 48h timeout)
   schedule:
-    - cron: "0 0 * * *"
-  # Allow manual trigger from GitHub UI
-  workflow_dispatch:
+    - cron: "0 0 * * *"   # Run every 24 hours
+  workflow_dispatch:      # Allow manual run
 
 jobs:
   wake-up-check:
@@ -14,25 +12,26 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # --- APP 1 CONFIG ---
-          - name: "App 1: Main"
+          # --- APP 1 ---
+          - name: "App 1: SwingScan"
             url: "https://taraacademy-swingscan.hf.space"
             
-          # --- APP 2 CONFIG ---
-          - name: "App 2: Analytics"
+          # --- APP 2 ---
+          - name: "App 2: US Market Analytics"
             url: "https://taraacademy-us-market-scanner.hf.space"
             
-          # --- APP 3 CONFIG ---
+          # --- APP 3 ---
           - name: "App 3: Dashboard"
             url: "https://taraacademy-super-scanner.hf.space"
-  
-   # --- APP 4 CONFIG ---
-          - name: "App 3: premarketscanner"
+
+          # --- APP 4 ---
+          - name: "App 4: Pre-Market Scanner"
             url: "https://taraacademy-premarketscanner.hf.space"
 
-   # --- APP 5 CONFIG ---
-          - name: "App 3: SwingLab pro Next"
+          # --- APP 5 ---
+          - name: "App 5: SwingLab Pro Next"
             url: "https://taraacademy-swinglabpronext.hf.space"
+
     steps:
       - name: Sentinel Check for ${{ matrix.name }}
         run: |
